@@ -41,7 +41,7 @@ $task = $_POST['task'];
 			  $sql = "INSERT INTO `tb_store_chat_file`(`store_chat_file`)VALUES('".$file_name."') ";
 				$result = mysqli_query($con,$sql);
 				$last_id = mysqli_insert_id($con);
-				$response = array("status" => "success", "error_message" => "", "success_message" => "insert successfull.", "data" => 'http://18.219.14.108/tudime_sms/file_store/'.$file_name);
+				$response = array("status" => "success", "error_message" => "", "success_message" => "insert successfull.", "data" => "http://$_SERVER[HTTP_HOST]".'/tudime_sms/file_store/'.$file_name);
 			} else{
 				$response = array("status" => "error", "error_message" => "insert failure.", 'success_message' => '', "data" => $path);
 			}
