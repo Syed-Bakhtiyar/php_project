@@ -17,7 +17,7 @@ use Twilio\Rest\Client;
 //use Twilio\Rest\Client;
 
 //$sid = "AC2831162b64712ab8d9edfc352c39f54e"; // Your Account SID from www.twilio.com/console
-//$token = "f53a5c0b26bb8dafeb5451a488bb4a1d"; // Your Auth Token from www.twilio.com/console
+//$token = "a07530863e6ccf11f42793bf41f2cab8"; // Your Auth Token from www.twilio.com/console
 //
 //$client = new Twilio\Rest\Client($sid, $token);
 //$message = $client->messages->create(
@@ -60,7 +60,7 @@ if($task == 'send_otp'){
 		if($result_data_otp_histroy > 0){
 			//$data = send_otp_on_mobile($_POST['mobile_no'],$randum_unique_code);
                         $sid = "AC2831162b64712ab8d9edfc352c39f54e"; // Your Account SID from www.twilio.com/console
-                        $token = "f53a5c0b26bb8dafeb5451a488bb4a1d"; // Your Auth Token from www.twilio.com/console
+                        $token = "a07530863e6ccf11f42793bf41f2cab8"; // Your Auth Token from www.twilio.com/console
                         $mobile_number = "'+".$_POST['mobile_no']."'";
                         $client = new Twilio\Rest\Client($sid, $token);
 						//$texttt = 'Hello Welcome to tudime!                               Your OTP Is '.$randum_unique_code .'                          Message ID                                4H7TNLF63ne';
@@ -80,7 +80,7 @@ if($task == 'send_otp'){
 		}else{
 			//$data = send_otp_on_mobile($_POST['mobile_no'],$randum_unique_code);
                         $sid = "AC2831162b64712ab8d9edfc352c39f54e"; // Your Account SID from www.twilio.com/console
-                        $token = "f53a5c0b26bb8dafeb5451a488bb4a1d"; // Your Auth Token from www.twilio.com/console
+                        $token = "a07530863e6ccf11f42793bf41f2cab8"; // Your Auth Token from www.twilio.com/console
                         $mobile_number = "'+".$_POST['mobile_no']."'";
                         $client = new Twilio\Rest\Client($sid, $token);
 						//$texttt = 'Hello Welcome to tudime!                               Your OTP Is '.$randum_unique_code .'                          Message ID                               4H7TNLF63ne';
@@ -153,7 +153,7 @@ echo json_encode($response);
 /*function send_otp_on_mobile($mobile_number,$otp){
 	
 	$sid = "AC2831162b64712ab8d9edfc352c39f54e"; // Your Account SID from www.twilio.com/console
-	$token = "f53a5c0b26bb8dafeb5451a488bb4a1d"; // Your Auth Token from www.twilio.com/console
+	$token = "a07530863e6ccf11f42793bf41f2cab8"; // Your Auth Token from www.twilio.com/console
 
 	$client = new Twilio\Rest\Client($sid, $token);
 	$message = $client->messages->create(
