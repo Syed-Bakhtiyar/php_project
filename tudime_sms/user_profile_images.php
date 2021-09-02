@@ -63,7 +63,7 @@ $UserID = $_POST['UserID'];
 				$UserID=$_POST['UserID'];
 				$isSubscriptionValidate = isUserSubscriptionValid($UserID);
 				if(!$isSubscriptionValidate){
-					$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+					$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
 				} else {
 					$profile_image=$_FILES['profile_image']['name'];
 					$image = array();

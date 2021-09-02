@@ -29,7 +29,7 @@ if($task == 'chat_backup'){
 		//if(isset($_FILES['fileZip'])){
 		$isSubscriptionValidate = isUserSubscriptionValid($UserID);
 		if(!$isSubscriptionValidate){
-			$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+			$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
 		} else {
 			$errors= array();
 			$file_name = $_FILES['fileZip']['name'];
@@ -70,7 +70,7 @@ if($task == 'chat_backup'){
 				
 		$isSubscriptionValidate = isUserSubscriptionValid($UserID);
 		if(!$isSubscriptionValidate){
-			$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+			$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
 		} else {
 			$sql2 = "SELECT * FROM chat_backup_tbl WHERE `UserID` ='".$_POST['UserID']."' AND `device_type`= '".$_POST['device_type']."'  ORDER BY `id` DESC LIMIT 1 ";
 			$result_img_link = mysqli_query($con,$sql2);

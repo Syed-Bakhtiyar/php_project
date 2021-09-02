@@ -47,7 +47,7 @@ if($task == 'contact_us'){
 	}else{
 		$isSubscriptionValidate = isUserSubscriptionValid($useid);
 		if(!$isSubscriptionValidate){
-			$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+			$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
 		} else {
 			$sql = "INSERT INTO `contact_us`(`name`,`email`,`mobile_no`,`address`,`country`,`pincode`,`comments`)VALUES('".$_POST['name']."','".$_POST['email']."','".$_POST['mobile_no']."','".$_POST['address']."','".$_POST['country']."','".$_POST['pincode']."','".$_POST['comments']."') ";
 			$result = mysqli_query($con,$sql);
@@ -66,7 +66,7 @@ if($task == 'contact_us'){
 	}else{
 		$isSubscriptionValidate = isUserSubscriptionValid($useid);
 		if(!$isSubscriptionValidate){
-			$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+			$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
 		} else {
 			         //$newmob = str_replace ( "+","", $_POST['mobile_no'] );
 			$newmob =	'+'.trim($_POST['mobile_no']);

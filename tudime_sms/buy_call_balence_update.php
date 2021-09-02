@@ -31,7 +31,7 @@ $Payment_Referance_no = $_POST['Payment_Referance_no'];
 		
 		$isSubscriptionValidate = isUserSubscriptionValid($useid);
 		if(!$isSubscriptionValidate){
-			$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.'." ".$useid." ", "data" => "");
+			$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => ''." ".$useid." ", "data" => "");
 		} else {
 			$sql2 = "SELECT * FROM buy_call_balence_tbl WHERE `useid` ='".$useid."' ";
 			$result_user_histroy = mysqli_query($con,$sql2);

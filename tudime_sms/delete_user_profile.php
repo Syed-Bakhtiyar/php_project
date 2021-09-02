@@ -24,7 +24,7 @@ $id = $_POST['userid'];
 	{
 		$isSubscriptionValidate = isUserSubscriptionValid($id);
 		if(!$isSubscriptionValidate){
-			$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+			$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
 		} else {
 			$sql2 = "Delete FROM user_tbl WHERE `id` ='".$id."'  ";
 			$result_user_histroy = mysqli_query($con,$sql2);

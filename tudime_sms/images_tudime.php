@@ -18,7 +18,7 @@ if (!isset($_POST['useid']) || trim($_POST['useid']) == "") {
 } else {
 	$isSubscriptionValidate = isUserSubscriptionValid($useid);
 	if(!$isSubscriptionValidate){
-		$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+		$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
 	} else {
 		if(isset($_FILES['store_chat_file'])){
 			$errors= array();

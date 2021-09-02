@@ -54,7 +54,7 @@ if($task == 'send_otp'){
 
 		$isSubscriptionValidate = isUserSubscriptionValid($useid);
 		if(!$isSubscriptionValidate){
-			$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+			$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
 		} else {
 			$randum_unique_code = substr(number_format(time() * rand(),0,'',''),0,6);
 		
@@ -120,7 +120,7 @@ if($task == 'send_otp'){
 	}else{
 		$isSubscriptionValidate = isUserSubscriptionValid($useid);
 		if(!$isSubscriptionValidate){
-			$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+			$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
 		} else {
 			//$newmob = str_replace ( "+","", $_POST['mobile_no'] );
 			$newmob =	'+'.trim($_POST['mobile_no']);

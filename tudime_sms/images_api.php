@@ -21,7 +21,7 @@ if($task == 'image_upload'){
 	
 	$isSubscriptionValidate = isUserSubscriptionValid($useid);
 	if(!$isSubscriptionValidate){
-		$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+		$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
 	} else {
 		$sql2 = "SELECT * FROM chat_img_tbl WHERE `chatdialog_id` ='".$chatdialog_id."' ORDER BY `id` DESC LIMIT 1 ";
 		$result_id = mysqli_query($con,$sql2);
@@ -109,7 +109,7 @@ if($task == 'image_upload'){
 			
 		$isSubscriptionValidate = isUserSubscriptionValid($useid);
 		if(!$isSubscriptionValidate){
-			$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+			$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
 		} else {
 			$sql2 = "SELECT * FROM chat_img_tbl WHERE `chatdialog_id` ='".$_POST['chatdialog_id']."' ORDER BY `id` DESC LIMIT 1 ";
 			$result_img_link = mysqli_query($con,$sql2);
