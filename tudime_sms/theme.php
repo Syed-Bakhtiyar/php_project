@@ -15,35 +15,18 @@
             return;
         }
 
-        // $isSubscriptionValidate = isUserSubscriptionValid($useid);
-        // if(!$isSubscriptionValidate){
-        //     $response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
-        //     echo json_encode($response);
-        //     return;
-        // }
+        $isSubscriptionValidate = isUserSubscriptionValid($useid);
+        if(!$isSubscriptionValidate){
+            $response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+            echo json_encode($response);
+            return;
+        }
 
         $sql = "INSERT INTO `theme`(`useid`, `theme_url`)VALUES('".$useid."', '".$theme_url."') ";
         mysqli_query($GLOBALS['con'], $sql);
         $response = array("status" => "success", "error_message" => "", "success_message" => "insert successfull.", "data" => "");
         echo json_encode($response);
     }
-
-    // function abc(){
-    //     $useid = $_GET['useid'];
-    //     if (!isset($_GET['useid']) || trim($_GET['useid']) == ""){
-    //         $response = array("status" => "error", "error_message" => "useid is missing", 'success_message' => '', "data" => "");
-    //         echo json_encode($response);
-    //         return;
-    //     }
-    //     $isSubscriptionValidate = isUserSubscriptionValid($useid);
-    //     if($isSubscriptionValidate){
-    //         $response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'validated', "data" => "");
-    //         echo json_encode($response);
-    //     } else {
-    //         $response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'invalidated', "data" => "");
-    //         echo json_encode($response);
-    //     }
-    // }
 
     function getCall(){
         $useid = $_GET['useid'];
@@ -53,12 +36,12 @@
             return;
         }
 
-        // $isSubscriptionValidate = isUserSubscriptionValid($useid);
-        // if(!$isSubscriptionValidate){
-        //     $response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
-        //     echo json_encode($response);
-        //     return;
-        // }
+        $isSubscriptionValidate = isUserSubscriptionValid($useid);
+        if(!$isSubscriptionValidate){
+            $response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+            echo json_encode($response);
+            return;
+        }
 
         $sql2 = "SELECT `t`.`id`, `t`.`useid`, `t`.`theme_url` FROM `theme` `t` 
                 WHERE `t`.`useid` = '".$useid."' ORDER BY `t`.`id` DESC";
@@ -76,11 +59,20 @@
 
     function deleteCall(){
         $id = $_GET['id'];
-        if (!isset($_GET['id']) || trim($_GET['id']) == ""){
+        $useid = $_GET['useid'];
+        if (!isset($_GET['id']) || trim($_GET['id']) == "" || !isset($_GET['useid']) || trim($_GET['useid']) == ""){
             $response = array("status" => "error", "error_message" => "id is missing", 'success_message' => '', "data" => "");
             echo json_encode($response);
             return;
         }
+
+        $isSubscriptionValidate = isUserSubscriptionValid($useid);
+        if(!$isSubscriptionValidate){
+            $response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+            echo json_encode($response);
+            return;
+        }
+
         $sql2 = "Delete FROM `theme` WHERE `id` = '".$id."'  ";
 		mysqli_query($GLOBALS['con'], $sql2);
         $response = array("status" => "success", "error_message" => "", "success_message" => "Delete successfull.", "data" => "");

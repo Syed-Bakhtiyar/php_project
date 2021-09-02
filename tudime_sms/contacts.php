@@ -1,20 +1,30 @@
 <?php
     header('Content-Type: application/json; Charset=UTF-8');
     include 'db_config/db_config.php';
+    include 'subscription_validation/subscription_validation.php';
 
     function postCall(){
         $response = array();
         $email = $_POST['email'];
         $mobile = $_POST['mobile'];
         $name = $_POST['name'];
+        $useid = $_POST['useid'];
 
         if (!isset($_POST['email']) || trim($_POST['email']) == "" || 
             !isset($_POST['mobile']) || trim($_POST['mobile']) == "" ||
-            !isset($_POST['name']) || trim($_POST['name']) == "") 
+            !isset($_POST['name']) || trim($_POST['name']) == "" || 
+            !isset($_POST['useid']) || trim($_POST['useid']) == "") 
         {
-            $response = array("status" => "error", "error_message" => "email, mobile and name fields are required", 'success_message' => '', "data" => "");
+            $response = array("status" => "error", "error_message" => "email, mobile, name and useid fields are required", 'success_message' => '', "data" => "");
             echo json_encode($response);
         } else {
+
+            $isSubscriptionValidate = isUserSubscriptionValid($useid);
+            if(!$isSubscriptionValidate){
+                $response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+                echo json_encode($response);
+                return;
+            }
             /**
              * This line will insert the data into contacts table
              */

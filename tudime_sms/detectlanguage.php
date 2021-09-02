@@ -1,8 +1,19 @@
 <?php
+
+include 'db_config/db_config.php';
+include 'subscription_validation/subscription_validation.php';
+
 $text_to_translate=$_POST['text'];
 $target_language=$_POST['targetlan'];
-$source_lang=guess_lang($text_to_translate);
-echo $translate=translate_lang($text_to_translate,$source_lang,$target_language);
+$useid=$_POST['useid'];
+if (!isset($_POST['useid']) || trim($_POST['useid']) == "") 
+{
+    $response = array("status" => "error", "error_message" => "provide user id", 'success_message' => '', "data" => "");
+    echo json_encode($response);
+} else {
+    $source_lang=guess_lang($text_to_translate);
+    echo $translate=translate_lang($text_to_translate,$source_lang,$target_language, $useid);
+}
 	
 function guess_lang($str) 
 {
@@ -18,8 +29,13 @@ function guess_lang($str)
  }
  
 
- function translate_lang($text_to_translate,$source_lang,$target_language)
+ function translate_lang($text_to_translate,$source_lang,$target_language, $useid)
  {
+    $isSubscriptionValidate = isUserSubscriptionValid($useid);
+    if(!$isSubscriptionValidate){
+        $response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+        return json_encode($response);
+    }
     $apiKey = 'AIzaSyBIMUuiseY_YGPEsKvizaS2570NQMKRma8';
     $url = 'https://www.googleapis.com/language/translate/v2?key=' . $apiKey . '&q=' . rawurlencode($text_to_translate) . '&source='.$source_lang.'&target='.$target_language;
     $handle = curl_init($url);

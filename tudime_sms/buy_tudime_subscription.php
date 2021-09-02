@@ -7,8 +7,7 @@ header('Content-Type: application/json; Charset=UTF-8');
 
 date_default_timezone_set('Asia/Kolkata');
 
-$con=mysqli_connect("localhost","root","IpTv@2019");
-$db=mysqli_select_db($con,"tudime_sms");
+include 'db_config/db_config.php';
 
 $response = array();
 $task = $_POST['task'];

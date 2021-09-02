@@ -1,8 +1,8 @@
 <?php
 header('Content-Type: application/json; Charset=UTF-8');
 
-$con=mysqli_connect("localhost","root","IpTv@2019");
-$db=mysqli_select_db($con,"tudime_sms");
+include 'db_config/db_config.php';
+include 'subscription_validation/subscription_validation.php';
 $response = array();
 $user_image=array();
 $task = $_POST['task'];
@@ -60,9 +60,12 @@ $UserID = $_POST['UserID'];
 	
 			if(isset($_POST['UserID']))
 			{
-							$UserID=$_POST['UserID'];
-							$profile_image=$_FILES['profile_image']['name'];
-							
+				$UserID=$_POST['UserID'];
+				$isSubscriptionValidate = isUserSubscriptionValid($UserID);
+				if(!$isSubscriptionValidate){
+					$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+				} else {
+					$profile_image=$_FILES['profile_image']['name'];
 					$image = array();
 					$ImageCount = count($profile_image);
 					if($ImageCount<=10)
@@ -102,10 +105,8 @@ $UserID = $_POST['UserID'];
 					{
 							$response = array("status" => "error", "error_message" => "You cannot upload more than 10 images");
 					
-					}		
-			
-			
-			
+					}	
+				}
 			}
 			else
 			{

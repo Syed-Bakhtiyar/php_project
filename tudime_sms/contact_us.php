@@ -12,8 +12,8 @@ header('Content-Type: application/json; Charset=UTF-8');
 //$con=mysqli_connect("localhost","tudime_app","tudimeapp123");
 //$db=mysqli_select_db($con,"tudimeapp");
 
-$con=mysqli_connect("localhost","root","IpTv@2019");
-$db=mysqli_select_db($con,"tudime_sms");
+include 'db_config/db_config.php';
+include 'subscription_validation/subscription_validation.php';
 
 $response = array();
 $task = $_POST['task'];
@@ -24,6 +24,7 @@ $address = $_POST['address'];
 $country = $_POST['country'];
 $pincode = $_POST['pincode'];
 $comments = $_POST['comments'];
+$useid = $_POST['useid'];
 
 
 if($task == 'contact_us'){
@@ -41,10 +42,17 @@ if($task == 'contact_us'){
 		$response = array("status" => "error", "error_message" => "provide pincode", 'success_message' => '', "data" => "");
 	}elseif (!isset($_POST['comments']) || trim($_POST['comments']) == ""){
 		$response = array("status" => "error", "error_message" => "provide comments", 'success_message' => '', "data" => "");
+	}elseif (!isset($_POST['useid']) || trim($_POST['useid']) == ""){
+		$response = array("status" => "error", "error_message" => "provide useid", 'success_message' => '', "data" => "");
 	}else{
-		$sql = "INSERT INTO `contact_us`(`name`,`email`,`mobile_no`,`address`,`country`,`pincode`,`comments`)VALUES('".$_POST['name']."','".$_POST['email']."','".$_POST['mobile_no']."','".$_POST['address']."','".$_POST['country']."','".$_POST['pincode']."','".$_POST['comments']."') ";
-		$result = mysqli_query($con,$sql);
-		$response = array("status" => "success", "error_message" => "", "success_message" => "inserted successfully.", "data" => '1');
+		$isSubscriptionValidate = isUserSubscriptionValid($useid);
+		if(!$isSubscriptionValidate){
+			$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+		} else {
+			$sql = "INSERT INTO `contact_us`(`name`,`email`,`mobile_no`,`address`,`country`,`pincode`,`comments`)VALUES('".$_POST['name']."','".$_POST['email']."','".$_POST['mobile_no']."','".$_POST['address']."','".$_POST['country']."','".$_POST['pincode']."','".$_POST['comments']."') ";
+			$result = mysqli_query($con,$sql);
+			$response = array("status" => "success", "error_message" => "", "success_message" => "inserted successfully.", "data" => '1');
+		}
 	}
     
     
@@ -53,23 +61,28 @@ if($task == 'contact_us'){
 		$response = array("status" => "error", "error_message" => "provide mobile number", 'success_message' => '', "data" => "");
 	}elseif (!isset($_POST['otp']) || trim($_POST['otp']) == ""){
 		$response = array("status" => "error", "error_message" => "provide otp number", 'success_message' => '', "data" => "");
+	}elseif (!isset($_POST['useid']) || trim($_POST['useid']) == ""){
+		$response = array("status" => "error", "error_message" => "provide useid", 'success_message' => '', "data" => "");
 	}else{
-		
-                //$newmob = str_replace ( "+","", $_POST['mobile_no'] );
-				$newmob =	'+'.trim($_POST['mobile_no']);
-		$sql2 = "SELECT * FROM mobile_otp_tbl WHERE `mobile_no` ='".$newmob."' ORDER BY `id` DESC LIMIT 1 ";
-		$result_mobile_otp_histroy = mysqli_query($con,$sql2);
-		mysqli_set_charset($con,"utf8");
-		while($row = mysqli_fetch_assoc($result_mobile_otp_histroy)){
-			$result_data_otp_histroy[] = $row;
+		$isSubscriptionValidate = isUserSubscriptionValid($useid);
+		if(!$isSubscriptionValidate){
+			$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+		} else {
+			         //$newmob = str_replace ( "+","", $_POST['mobile_no'] );
+			$newmob =	'+'.trim($_POST['mobile_no']);
+			$sql2 = "SELECT * FROM mobile_otp_tbl WHERE `mobile_no` ='".$newmob."' ORDER BY `id` DESC LIMIT 1 ";
+			$result_mobile_otp_histroy = mysqli_query($con,$sql2);
+			mysqli_set_charset($con,"utf8");
+			while($row = mysqli_fetch_assoc($result_mobile_otp_histroy)){
+				$result_data_otp_histroy[] = $row;
+			}
+			$otp_db = $result_data_otp_histroy[0]['otp'];
+			if($otp_db == $_POST['otp']){
+				$response = array("status" => "success", "error_message" => "", "success_message" => "Otp verify successfull", "data" => $_POST['mobile_no']);
+			}else{
+				$response = array("status" => "error", "error_message" => "Invalid OTP..", 'success_message' => '', "data" => "");
+			}
 		}
-		$otp_db = $result_data_otp_histroy[0]['otp'];
-		if($otp_db == $_POST['otp']){
-			$response = array("status" => "success", "error_message" => "", "success_message" => "Otp verify successfull", "data" => $_POST['mobile_no']);
-		}else{
-			$response = array("status" => "error", "error_message" => "Invalid OTP..", 'success_message' => '', "data" => "");
-		}
-		
 	}
     
 }else{

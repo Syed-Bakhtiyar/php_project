@@ -3,8 +3,8 @@ header('Content-Type: application/json; Charset=UTF-8');
 
 
 
-$con=mysqli_connect("localhost","root","IpTv@2019");
-$db=mysqli_select_db($con,"tudime_sms");
+include 'db_config/db_config.php';
+include 'subscription_validation/subscription_validation.php';
 
 $response = array();
 $task = $_POST['task'];
@@ -15,6 +15,11 @@ $Bio = $_POST['Bio'];
 $QB_User_id = $_POST['QB_User_id'];
 $userid = $_POST['userid'];
 
+$isSubscriptionValidate = isUserSubscriptionValid($userid);
+if(!$isSubscriptionValidate){
+	$response = array("status" => "error", "error_message" => "useid is subscription", 'success_message' => 'Your subscription has expired, please activate it by purchasing one year subscription.', "data" => "");
+	die(json_encode($response));
+}
 if($_POST['name'] != ''){
 	$sql = "UPDATE user_tbl SET `name`='".$name."' WHERE `id`='".$userid."' ";
 	$result = mysqli_query($con,$sql);
