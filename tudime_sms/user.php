@@ -40,7 +40,7 @@
         }
 
         $sql2 = "SELECT `ut`.* FROM `user_tbl` `ut` 
-        WHERE `ut`.`unique_name` LIKE '%".$text."%' OR `ut`.`userid` LIKE '%".$text."%'";
+        WHERE `ut`.`unique_name` LIKE '%".$text."%' OR `ut`.`userid` LIKE '%".$text."%' OR `ut`.`name` LIKE '%".$text."%'";
         
         $result_user_histroy = mysqli_query($GLOBALS['con'],$sql2);
         mysqli_set_charset($GLOBALS['con'],"utf8");
