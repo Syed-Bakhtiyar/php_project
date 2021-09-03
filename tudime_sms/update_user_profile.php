@@ -13,6 +13,7 @@ $email = $_POST['email'];
 $privacy_status = $_POST['privacy_status'];
 $Bio = $_POST['Bio'];
 $QB_User_id = $_POST['QB_User_id'];
+$platform = $_POST['platform'];
 $userid = $_POST['userid'];
 
 $isSubscriptionValidate = isUserSubscriptionValid($userid);
@@ -140,13 +141,16 @@ if($_POST['QB_User_id'] != ''){
 	
 	$response = array("status" => "success", "error_message" => "", "success_message" => "update successfull.", "data" => "");
 }
+if($_POST['platform'] != ''){
+	if($platform != "1" && $platform != "2"){
+		$response = array("status" => "failure", "error_message" => "Only 1 and 2 values are allowed in platform field", "success_message" => "", "data" => "");
+		die(json_encode($response));
+	}
+	$sql = "UPDATE user_tbl SET `platform`='".$platform."' WHERE `id`='".$userid."' ";
+	$result = mysqli_query($con,$sql);
+	
+	$response = array("status" => "success", "error_message" => "", "success_message" => "update successfull.", "data" => "");
+}
 
 echo json_encode($response);
-
-
-
-
-
-
-
 ?>

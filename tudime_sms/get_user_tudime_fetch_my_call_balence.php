@@ -36,7 +36,7 @@ $id = $_POST['useid'];
 				
 				$f_data[] = $val;
 			}
-			$response = array("status" => "success", "error_message" => "", "success_message" => "user dara get successfull.", "data" => $f_data);
+			$response = array("status" => "success", "error_message" => "", "success_message" => "user data get successfull.", "data" => $f_data);
 		}
                 
 		

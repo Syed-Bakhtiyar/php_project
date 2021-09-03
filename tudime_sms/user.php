@@ -57,10 +57,11 @@
             $userData['Cover_pic_url'] = is_null($row["Cover_pic"]) ? NULL : 'http://'.$_SERVER['HTTP_HOST'].'/tudime_sms/user_profile_image/'.$row['Cover_pic'];
             $userData['QB_User_id'] = $row['QB_User_id'];
             $userData['unique_name'] = $row['unique_name'];
+            $userData['platform'] = $row['platform'];
             array_push($mapUser, $userData);
         }
         
-        $response = array("status" => "success", "error_message" => "", "success_message" => "user dara get successfull.", "data" => $mapUser);
+        $response = array("status" => "success", "error_message" => "", "success_message" => "user data get successfull.", "data" => $mapUser);
         echo json_encode($response);
     }
 
