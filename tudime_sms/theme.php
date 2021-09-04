@@ -1,7 +1,6 @@
 <?php
     header('Content-Type: application/json; Charset=UTF-8');
     include 'db_config/db_config.php';
-    include 'subscription_validation/subscription_validation.php';
 
     function postCall(){
         $response = array();
@@ -11,13 +10,6 @@
             !isset($_POST['theme_url']) || trim($_POST['theme_url']) == "")
         {
             $response = array("status" => "error", "error_message" => "useid and theme_url fields are required", 'success_message' => '', "data" => "");
-            echo json_encode($response);
-            return;
-        }
-
-        $isSubscriptionValidate = isUserSubscriptionValid($useid);
-        if(!$isSubscriptionValidate){
-            $response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
             echo json_encode($response);
             return;
         }
@@ -32,13 +24,6 @@
         $useid = $_GET['useid'];
         if (!isset($_GET['useid']) || trim($_GET['useid']) == ""){
             $response = array("status" => "error", "error_message" => "useid is missing", 'success_message' => '', "data" => "");
-            echo json_encode($response);
-            return;
-        }
-
-        $isSubscriptionValidate = isUserSubscriptionValid($useid);
-        if(!$isSubscriptionValidate){
-            $response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
             echo json_encode($response);
             return;
         }
@@ -59,16 +44,8 @@
 
     function deleteCall(){
         $id = $_GET['id'];
-        $useid = $_GET['useid'];
-        if (!isset($_GET['id']) || trim($_GET['id']) == "" || !isset($_GET['useid']) || trim($_GET['useid']) == ""){
+        if (!isset($_GET['id']) || trim($_GET['id']) == ""){
             $response = array("status" => "error", "error_message" => "id is missing", 'success_message' => '', "data" => "");
-            echo json_encode($response);
-            return;
-        }
-
-        $isSubscriptionValidate = isUserSubscriptionValid($useid);
-        if(!$isSubscriptionValidate){
-            $response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
             echo json_encode($response);
             return;
         }

@@ -2,7 +2,6 @@
 header('Content-Type: application/json; Charset=UTF-8');
 
 include 'db_config/db_config.php';
-include 'subscription_validation/subscription_validation.php';
 $response = array();
 $user_image=array();
 $task = $_POST['task'];
@@ -61,52 +60,47 @@ $UserID = $_POST['UserID'];
 			if(isset($_POST['UserID']))
 			{
 				$UserID=$_POST['UserID'];
-				$isSubscriptionValidate = isUserSubscriptionValid($UserID);
-				if(!$isSubscriptionValidate){
-					$response = array("status" => "error", "error_message" => "Your subscription has expired, please activate it by purchasing one year subscription.", 'success_message' => '', "data" => "");
-				} else {
-					$profile_image=$_FILES['profile_image']['name'];
-					$image = array();
-					$ImageCount = count($profile_image);
-					if($ImageCount<=10)
-					{
-							for($i = 0; $i < $ImageCount; $i++)
-							{
-								$_FILES['file']['name']       = $_FILES['profile_image']['name'][$i];
-								$_FILES['file']['type']       = $_FILES['profile_image']['type'][$i];
-								$_FILES['file']['tmp_name']   = $_FILES['profile_image']['tmp_name'][$i];
-								$_FILES['file']['error']      = $_FILES['profile_image']['error'][$i];
-								$_FILES['file']['size']       = $_FILES['profile_image']['size'][$i];
+				$profile_image=$_FILES['profile_image']['name'];
+				$image = array();
+				$ImageCount = count($profile_image);
+				if($ImageCount<=10)
+				{
+						for($i = 0; $i < $ImageCount; $i++)
+						{
+							$_FILES['file']['name']       = $_FILES['profile_image']['name'][$i];
+							$_FILES['file']['type']       = $_FILES['profile_image']['type'][$i];
+							$_FILES['file']['tmp_name']   = $_FILES['profile_image']['tmp_name'][$i];
+							$_FILES['file']['error']      = $_FILES['profile_image']['error'][$i];
+							$_FILES['file']['size']       = $_FILES['profile_image']['size'][$i];
 
-								// File upload configuration
-								$path = "new_profile_image/";
-								$temp_file=$_FILES['profile_image']['tmp_name'][$i];
-								//$path = $path . basename($_FILES['profile_image']['name'][$i]);
-								$uniquid=uniqid();
-								$file_name = $_FILES['profile_image']['name'][$i];
-								$temp = explode(".",$file_name);
-								//$newfilename = round(microtime(true)) . '.' . end($temp);
-								$newfilename=$uniquid.'_'.$file_name;	
-								$path = $path . basename($newfilename);
-								if(move_uploaded_file($temp_file, $path)) 
-								{
-									
-									
-									$sql = "INSERT INTO `tbl_user_profile_image`(`user_id`,`profile_image`,`status`)VALUES('".$UserID."','".$newfilename."','1') ";
-									$result = mysqli_query($con,$sql);
-									$last_id = mysqli_insert_id($con);
-									$response = array("status" => "Success",'success_message' => 'File upload success');
-									
-								}
+							// File upload configuration
+							$path = "new_profile_image/";
+							$temp_file=$_FILES['profile_image']['tmp_name'][$i];
+							//$path = $path . basename($_FILES['profile_image']['name'][$i]);
+							$uniquid=uniqid();
+							$file_name = $_FILES['profile_image']['name'][$i];
+							$temp = explode(".",$file_name);
+							//$newfilename = round(microtime(true)) . '.' . end($temp);
+							$newfilename=$uniquid.'_'.$file_name;	
+							$path = $path . basename($newfilename);
+							if(move_uploaded_file($temp_file, $path)) 
+							{
+								
+								
+								$sql = "INSERT INTO `tbl_user_profile_image`(`user_id`,`profile_image`,`status`)VALUES('".$UserID."','".$newfilename."','1') ";
+								$result = mysqli_query($con,$sql);
+								$last_id = mysqli_insert_id($con);
+								$response = array("status" => "Success",'success_message' => 'File upload success');
 								
 							}
-					}
-					else
-					{
-							$response = array("status" => "error", "error_message" => "You cannot upload more than 10 images");
-					
-					}	
+							
+						}
 				}
+				else
+				{
+						$response = array("status" => "error", "error_message" => "You cannot upload more than 10 images");
+				
+				}	
 			}
 			else
 			{
