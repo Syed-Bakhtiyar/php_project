@@ -5,17 +5,17 @@
 
     function postCall(){
         $response = array();
-        $email = $_POST['email'];
-        $mobile = $_POST['mobile'];
-        $name = $_POST['name'];
+        // $email = $_POST['email'];
+        // $mobile = $_POST['mobile'];
+        $data = json_decode( $_POST['data']);
+        // var_dump($data);
         $useid = $_POST['useid'];
+        $vvv = '';
 
-        if (!isset($_POST['email']) || trim($_POST['email']) == "" || 
-            !isset($_POST['mobile']) || trim($_POST['mobile']) == "" ||
-            !isset($_POST['name']) || trim($_POST['name']) == "" || 
+        if (!isset($_POST['data']) || trim($_POST['data']) == "" || 
             !isset($_POST['useid']) || trim($_POST['useid']) == "") 
         {
-            $response = array("status" => "error", "error_message" => "email, mobile, name and useid fields are required", 'success_message' => '', "data" => "");
+            $response = array("status" => "error", "error_message" => "data and useid fields are required", 'success_message' => '', "data" => "");
             echo json_encode($response);
         } else {
 
@@ -25,15 +25,15 @@
                 echo json_encode($response);
                 return;
             }
-            /**
-             * This line will insert the data into contacts table
-             */
-            $sql = "INSERT INTO `contacts`(`email`, `mobile`, `name`)VALUES('".$email."', '".$mobile."', '".$name."') ";
-            mysqli_query($GLOBALS['con'],$sql);
+
+            foreach($data as $value){
+                $sql = "INSERT INTO `contacts`(`email`, `mobile`, `name`)VALUES('".$value->email."', '".$value->mobile."', '".$value->name."') ";
+                mysqli_query($GLOBALS['con'],$sql);
+            }
 
             $sql2 = "SELECT `ut`.`userid`, `ut`.`QB_User_id`, `tspi`.`profile_image` FROM `user_tbl` `ut` 
                      LEFT JOIN `tbl_user_profile_image` `tspi` ON `tspi`.`user_id` = `ut`.`id` 
-                     WHERE `ut`.`userid` ='".$email."' OR `ut`.`userid` = '".$mobile."' ORDER BY `tspi`.`create_dt` DESC LIMIT 1";
+                     WHERE `ut`.`id` ='".$useid."' ORDER BY `tspi`.`create_dt` DESC LIMIT 1";
             $result_user_histroy = mysqli_query($GLOBALS['con'],$sql2);
             while($row = mysqli_fetch_assoc($result_user_histroy)){
                 $result_data_user_histroy["userId"] = $row["userid"];
