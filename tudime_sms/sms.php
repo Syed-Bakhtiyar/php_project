@@ -110,6 +110,7 @@ if($task == 'send_otp'){
 		$response = array("status" => "error", "error_message" => "provide otp number", 'success_message' => '', "data" => "");
 	}else{
 		//$newmob = str_replace ( "+","", $_POST['mobile_no'] );
+		
 		$newmob =	'+'.trim($_POST['mobile_no']);
 		$sql2 = "SELECT * FROM mobile_otp_tbl WHERE `mobile_no` ='".$newmob."' ORDER BY `id` DESC LIMIT 1 ";
 		$result_mobile_otp_histroy = mysqli_query($con,$sql2);
@@ -118,7 +119,7 @@ if($task == 'send_otp'){
 			$result_data_otp_histroy[] = $row;
 		}
 				
-		$otp_db = $result_data_otp_histroy[0]['otp'];
+		// $otp_db = $result_data_otp_histroy[0]['otp'];
 		//if($otp_db == $_POST['otp']){
 			$sql2check_mob = "SELECT * FROM user_tbl WHERE `userid` ='".$newmob."' ORDER BY `id` DESC LIMIT 1 ";
 			$result_mobile_histroy = mysqli_query($con,$sql2check_mob);
@@ -132,6 +133,34 @@ if($task == 'send_otp'){
 				$response = array("status" => "success", "error_message" => "", "success_message" => "Otp verify successfull", "data" => array('mobile_number'=>$_POST['mobile_no'],'id'=>(string)$id));
 			}else{
 				//echo $sql2insert_mob = "INSERT INTO user_tbl(`userid`) VALUES('".$newmob."') "; exit;
+				
+				$sqlCheckIsRefer = "SELECT * FROM `user_referal` WHERE `referal_username` = '".$mobile_no."' LIMIT 1";
+				$result_referal_user = mysqli_query($con, $sqlCheckIsRefer);
+				$result_referal_user_histroy =  mysqli_fetch_assoc($result_referal_user);
+				if(!is_null($result_referal_user_histroy)){
+					$userid = $result_referal_user_histroy['useid'];
+
+					$sqlCheckReferCount = "SELECT * FROM `user_refer_count` WHERE `useid` = '".$userid."' Limit 1";
+					$result_referal_user_count = mysqli_query($con, $sqlCheckReferCount);
+					$result_referal_user_count_histroy = mysqli_fetch_assoc($result_referal_user_count);
+
+					if(!is_null( $result_referal_user_count_histroy)){
+						$user_count_id = $result_referal_user_count_histroy['id'];
+						$count = (intval($result_referal_user_count_histroy['counter']) + 1) ;
+						$sql = "UPDATE user_refer_count SET `counter`='".$count."' WHERE `id`='".$user_count_id."' ";
+						$result = mysqli_query($con,$sql);
+
+					} else {
+						$start_date_time = date('Y-m-d H:i:s');
+						$end_date_time = date('Y-m-d H:i:s', strtotime('+1 year', strtotime($start_date_time)));
+						$sql = "INSERT INTO `user_refer_count` (`useid`, `counter`, `timestamp`, `exp_timestamp`) VALUES ('".$userid."', 1, '".$start_date_time."', '".$end_date_time."')";
+						$result = mysqli_query($con,$sql);
+
+					}
+					
+				}
+
+
 				$sql2insert_mob ="INSERT INTO `user_tbl` (`userid`, `name`, `email`, `privacy_status`, `Bio`, `pic1`, `pic2`, `pic3`, `pic4`, `Cover_pic`, `QB_User_id`, `create_dt`) VALUES ('".$newmob."', '', '', '', '', '', '', '', '', '', '', CURRENT_TIMESTAMP)";
 				$result_mobile_insert = mysqli_query($con,$sql2insert_mob);
 				$id = mysqli_insert_id($con);

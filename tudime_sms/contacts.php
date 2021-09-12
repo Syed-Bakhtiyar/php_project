@@ -5,12 +5,8 @@
 
     function postCall(){
         $response = array();
-        // $email = $_POST['email'];
-        // $mobile = $_POST['mobile'];
         $data = json_decode( $_POST['data']);
-        // var_dump($data);
         $useid = $_POST['useid'];
-        $vvv = '';
 
         if (!isset($_POST['data']) || trim($_POST['data']) == "" || 
             !isset($_POST['useid']) || trim($_POST['useid']) == "") 
