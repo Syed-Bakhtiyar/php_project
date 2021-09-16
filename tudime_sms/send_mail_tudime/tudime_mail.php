@@ -26,12 +26,9 @@ if($task == 'send_mail'){
 		$response = array("status" => "error", "error_message" => "Invalid email format", "success_message" => "", "data" => "");
 	}else{
 		$email_id = $_POST['email'];
-        $user_service_taker_email = $email_id;
-        $otp = '123';
-        if($email_id == 'meorthodox2@gmail.com'){
-            $otp = '123456';
-        }
-		$to = array(array('email'=>$user_service_taker_email, 'otp'=>$otp));
+		$user_service_taker_email = $email_id;
+
+		$to = array(array('email'=>$user_service_taker_email, 'otp'=>'123'));
 		$subject = "TuDime OTP Verification.";
 		//$headers = "From:" . $c_email . "\r\n";
 		//$headers .= "To:" . $to . "\r\n";
@@ -47,7 +44,7 @@ if($task == 'send_mail'){
 		$msgg .= "If you have any queries, please contact info@onlinefrt.com";*/
 		if(sendMail($to, $subject, $msgg)) {
 		 ///echo "Mailer Error: " . $mail->ErrorInfo;
-            
+
 			$response = array("status" => "success", "error_message" => "", "success_message" => "Mail sent successfully", "data" => "");
 			//echo json_encode($response);
 
