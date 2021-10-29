@@ -22,9 +22,9 @@
                 return;
             }
             $implodeString = '('."'".implode("', '", $userIds)."'".')';
-            $sql2 = "SELECT `ut`.`userid`, `ut`.`QB_User_id`, `tspi`.`profile_image` FROM `user_tbl` `ut` 
+            $sql2 = "SELECT `ut`.`userid`, Max(`ut`.`QB_User_id`) as QB_User_id, Max(`tspi`.`profile_image`) as profile_image, Max(`tspi`.`create_dt`) as create_dt FROM `user_tbl` `ut` 
                      LEFT JOIN `tbl_user_profile_image` `tspi` ON `tspi`.`user_id` = `ut`.`id` 
-                     WHERE `ut`.`userid` IN ".$implodeString." ORDER BY `tspi`.`create_dt` DESC";
+                     WHERE `ut`.`userid` IN ".$implodeString." Group by `ut`.`userid` ORDER BY `create_dt` DESC";
             $result_user_histroy = mysqli_query($GLOBALS['con'],$sql2);
             $result_data_users = [];
             while($row = mysqli_fetch_assoc($result_user_histroy)){
