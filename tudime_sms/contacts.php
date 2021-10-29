@@ -5,13 +5,13 @@
 
     function postCall(){
         $response = array();
-        $data = json_decode( $_POST['data']);
         $useid = $_POST['useid'];
+        $userIds = json_decode( $_POST['userIds']);
 
-        if (!isset($_POST['data']) || trim($_POST['data']) == "" || 
+        if (!isset($_POST['userIds']) || trim($_POST['userIds']) == "" || 
             !isset($_POST['useid']) || trim($_POST['useid']) == "") 
         {
-            $response = array("status" => "error", "error_message" => "data and useid fields are required", 'success_message' => '', "data" => "");
+            $response = array("status" => "error", "error_message" => "userIds and useid fields are required", 'success_message' => '', "data" => "");
             echo json_encode($response);
         } else {
 
@@ -21,22 +21,19 @@
                 echo json_encode($response);
                 return;
             }
-
-            foreach($data as $value){
-                $sql = "INSERT INTO `contacts`(`email`, `mobile`, `name`)VALUES('".$value->email."', '".$value->mobile."', '".$value->name."') ";
-                mysqli_query($GLOBALS['con'],$sql);
-            }
-
+            $implodeString = '('."'".implode("', '", $userIds)."'".')';
             $sql2 = "SELECT `ut`.`userid`, `ut`.`QB_User_id`, `tspi`.`profile_image` FROM `user_tbl` `ut` 
                      LEFT JOIN `tbl_user_profile_image` `tspi` ON `tspi`.`user_id` = `ut`.`id` 
-                     WHERE `ut`.`id` ='".$useid."' ORDER BY `tspi`.`create_dt` DESC LIMIT 1";
+                     WHERE `ut`.`userid` IN ".$implodeString." ORDER BY `tspi`.`create_dt` DESC";
             $result_user_histroy = mysqli_query($GLOBALS['con'],$sql2);
+            $result_data_users = [];
             while($row = mysqli_fetch_assoc($result_user_histroy)){
                 $result_data_user_histroy["userId"] = $row["userid"];
                 $result_data_user_histroy["qbUserId"] = $row["QB_User_id"];
                 $result_data_user_histroy['profileImage'] = is_null($row["profile_image"]) ? NULL : "http://$_SERVER[HTTP_HOST]".'/tudime_sms/new_profile_image/'.$row["profile_image"];
+                array_push($result_data_users, $result_data_user_histroy);
             }
-            $response = array("status" => "success", "error_message" => "", "success_message" => "insert successfull.", "data" => $result_data_user_histroy);
+            $response = array("status" => "success", "error_message" => "", "success_message" => "insert successfull.", "data" => $result_data_users);
             echo json_encode($response);
         }
     }
